@@ -47,17 +47,24 @@ class ForecastCard extends Component {
 
     renderDayCards() {
         let lastDay = null;
+        let daysCount = 0;
         return this.props.forecast.list.map((data, index) => {
             let weatherDay = new Date(data.dt_txt).getDate();
+
+            if (daysCount > 4) {
+                return null;
+            }
+
             if (!lastDay) {
                 lastDay = weatherDay;
             } else if (lastDay == weatherDay) {
                 return null
             }
             lastDay = weatherDay;
+            daysCount += 1;
 
             return (
-                <div key={index} className="col-sm-2 p-1">
+                <div key={index} className="col-sm-2 p-0 m-3">
                     <div className="card">
                         <div className="card-body">
                             <h5 className="card-title">{data.dt_txt.split(' ')[0]}</h5>
