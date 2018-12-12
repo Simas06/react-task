@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
-import ApiReducer from "./ApiReducer";
+import CurrentWeatherReducer from "./CurrentWeatherReducer";
+import ForecastReducer from "./ForecastReducer";
 
 const rootReducer = combineReducers({
-    ApiReducer,
+    CurrentWeatherReducer,
+    ForecastReducer,
 });
 
 export default rootReducer;

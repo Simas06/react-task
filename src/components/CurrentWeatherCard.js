@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {pinCurrentWeatherCity, unpinCurrentWeatherCity} from "../actions/ApiAction";
+import {
+    pinCurrentWeatherCity,
+    unpinCurrentWeatherCity,
+    refreshCurrentWeatherCity
+} from "../actions/CurrentWeatherAction";
 
 class CurrentWeather extends Component {
-    
+
     handleCityPin() {
         if (this.props.pinned) {
             this.props.unpinCurrentWeatherCity(this.props.weatherInfo.cityName);
@@ -26,7 +30,21 @@ class CurrentWeather extends Component {
             return 'Pin city';
         }
     }
-    
+
+    refreshCurrentWeather() {
+        this.props.refreshCurrentWeatherCity(this.props.weatherInfo.cityName);
+    }
+
+    renderRefreshButton() {
+        if (this.props.pinned) {
+            return (
+                <button className="btn btn-outline-secondary left mt-3" onClick={this.refreshCurrentWeather.bind(this)}>Refresh</button>
+            );
+        }
+
+        return null;
+    }
+
     render() {
         if (!this.props.weatherInfo.cityName) {
             return null;
@@ -38,16 +56,17 @@ class CurrentWeather extends Component {
                     <div className="card-body">
                         <h5 className="card-title">{this.props.weatherInfo.cityName}</h5>
                         <div>
-                            <h1 className="inline">{this.props.weatherInfo.temp}</h1>
+                            <h1 className="inline">{this.props.weatherInfo.temp}°C</h1>
                             <img className="mb-3" src={this.getIconUrl()}></img>
                         </div>
                         <div>
-                            <h3 className="inline m-3">{this.props.weatherInfo.tempMax}</h3>
-                            <h3 className="inline text-secondary m-3">{this.props.weatherInfo.tempMin}</h3>
+                            <h3 className="inline m-3">{this.props.weatherInfo.tempMax}°C</h3>
+                            <h3 className="inline text-secondary m-3">{this.props.weatherInfo.tempMin}°C</h3>
                         </div>
-                        <button className="btn btn-outline-secondary right" onClick={this.handleCityPin.bind(this)}>{this.getButtonText()}</button>
+                        <button className="btn btn-outline-secondary right mt-3" onClick={this.handleCityPin.bind(this)}>{this.getButtonText()}</button>
+                        {this.renderRefreshButton()}
                     </div>
-                </div>   
+                </div>
             </div>
         );
     }
@@ -57,6 +76,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         pinCurrentWeatherCity,
         unpinCurrentWeatherCity,
+        refreshCurrentWeatherCity,
     }, dispatch);
 }
 
